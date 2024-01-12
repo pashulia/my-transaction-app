@@ -1,3 +1,5 @@
+import 'chart.js/auto';
+
 import React, {
   useEffect,
   useState,
@@ -27,6 +29,7 @@ const TransactionHistory: React.FC = () => {
   const [filterEndDate, setFilterEndDate] = useState<string | null>(null);
   const [error, setError] = useState<any>(null); 
   const [chartData, setChartData] = useState<any>(null);
+  
 
   // const fetchTransactions = async () => {
   //   try {
@@ -86,6 +89,7 @@ const TransactionHistory: React.FC = () => {
       }
 
       setFilteredTransactions(filtered);
+      updateChartData(filtered);
     };
 
     filterTransactions();
