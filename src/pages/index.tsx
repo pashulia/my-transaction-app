@@ -44,12 +44,10 @@ const TransactionHistory: React.FC = () => {
   // }, []);
 
   useEffect(() => {
-    // Запускаем мок-сервер перед началом компонента
     server.listen();
 
     const fetchTransactions = async () => {
       try {
-        // Используем мок-сервер для получения мокованных данных
         const response = await axios.get('/api/transactions');
         setTransactions(response.data as Transaction[]);
         setError(null);
@@ -61,7 +59,6 @@ const TransactionHistory: React.FC = () => {
 
     fetchTransactions();
 
-    // Очищаем мок-сервер после завершения компонента
     return () => server.close();
   }, []);
 

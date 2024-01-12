@@ -1,5 +1,4 @@
 import { rest } from 'msw';
-// src/mocks/server.ts
 import { setupServer } from 'msw/node';
 
 const server = setupServer(
