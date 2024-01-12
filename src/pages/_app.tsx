@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-// pages/_app.tsx
 import { AppProps } from 'next/app';
 
 import i18n from '../i18n';

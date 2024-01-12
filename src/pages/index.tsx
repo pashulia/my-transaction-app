@@ -1,4 +1,3 @@
-// pages/index.tsx
 import React, {
   useEffect,
   useState,
@@ -7,6 +6,8 @@ import React, {
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
+
+import { server } from '../mocks/server';
 
 interface Transaction {
   id: number;
@@ -24,22 +25,44 @@ const TransactionHistory: React.FC = () => {
   const [filterType, setFilterType] = useState<string | null>(null);
   const [filterStartDate, setFilterStartDate] = useState<string | null>(null);
   const [filterEndDate, setFilterEndDate] = useState<string | null>(null);
-  const [error, setError] = useState<any>(null); // Обновлено здесь
+  const [error, setError] = useState<any>(null); 
   const [chartData, setChartData] = useState<any>(null);
 
-  const fetchTransactions = async () => {
-    try {
-      const response = await axios.get('/api/transactions');
-      setTransactions(response.data as Transaction[]);
-      setError(null); // Обновлено здесь
-    } catch (error: any) {
-      setError(error); // Обновлено здесь
-      console.error('Error fetching transactions:', error.message);
-    }
-  };
+  // const fetchTransactions = async () => {
+  //   try {
+  //     const response = await axios.get('/api/transactions');
+  //     setTransactions(response.data as Transaction[]);
+  //     setError(null); 
+  //   } catch (error: any) {
+  //     setError(error); 
+  //     console.error('Error fetching transactions:', error.message);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchTransactions();
+  // }, []);
 
   useEffect(() => {
+    // Запускаем мок-сервер перед началом компонента
+    server.listen();
+
+    const fetchTransactions = async () => {
+      try {
+        // Используем мок-сервер для получения мокованных данных
+        const response = await axios.get('/api/transactions');
+        setTransactions(response.data as Transaction[]);
+        setError(null);
+      } catch (error: any) {
+        setError(error);
+        console.error('Error fetching transactions:', error.message);
+      }
+    };
+
     fetchTransactions();
+
+    // Очищаем мок-сервер после завершения компонента
+    return () => server.close();
   }, []);
 
   useEffect(() => {
@@ -175,7 +198,7 @@ const TransactionHistory: React.FC = () => {
             options={{
               scales: {
                 x: {
-                  type: 'category', // Используйте 'category'
+                  type: 'category',
                 },
                 y: {
                   beginAtZero: true,
